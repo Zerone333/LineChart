@@ -1,0 +1,15 @@
+//
+//  NSMutableAttributedString+Extentsion.h
+//  WSCloudBoardPartner
+//
+//  Created by 李艺真 on 16/2/22.
+//  Copyright © 2016年 Lee. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+
+@interface NSMutableAttributedString (Extentsion)
+
++(NSMutableAttributedString *) stringArray:(NSArray *)stringArray colorArray:(NSArray *)colorArray;
+
+@end

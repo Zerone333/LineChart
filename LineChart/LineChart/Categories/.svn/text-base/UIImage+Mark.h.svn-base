@@ -1,0 +1,54 @@
+//
+//  UIImage+Mark.h
+//  WSCloudBoardPartner
+//
+//  Created by MrChens on 8/1/2016.
+//  Copyright © 2016 Lee. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+@interface UIImage (Mark)
++(UIImage *)markImageWithOriginImage:(UIImage *)originImage markTextStr:(NSString *)markTextStr;
++(UIImage *)markImageWithOriginImage:(UIImage *)originImage logoImage:(UIImage *)logoImage;
+
+/**
+ *  添加文字水印
+ *
+ *  @param img  原图
+ *  @param text 水印文字
+ *
+ *  @return 原图＋水印文字
+ */
++ (UIImage *)addText:(UIImage *)img text:(NSString *)text;
+
+/**
+ *  纯色图片
+ *
+ *  @param color 颜色
+ *
+ *  @return 纯色图片
+ */
++ (UIImage *)imageWithColor:(UIColor *)color;
+
+/**
+ *  图片缩放
+ *
+ *  @param img   原图
+ *  @param scale 缩放比例
+ *
+ *  @return 缩放后的图片
+ */
++ (UIImage *)imageScale:(UIImage *)img scale:(CGFloat)scale;
+
++ (UIImage*)OriginImage:(UIImage *)image scaleToSize:(CGSize)size;
+
+//裁剪图片
++ (UIImage*)getSubImage:(UIImage *)image rect:(CGRect)rect;
+
+//修正图片方向
++ (UIImage *)fixOrientation:(UIImage *)aImage;
+
+//图片旋转
++ (UIImage *)image:(UIImage *)image rotation:(UIImageOrientation)orientation;
+@end

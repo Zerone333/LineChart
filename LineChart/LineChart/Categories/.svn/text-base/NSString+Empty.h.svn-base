@@ -1,0 +1,30 @@
+//
+//  NSString+Empty.h
+//  WSCloudBoardPartner
+//
+//  Created by MrChens on 13/1/2016.
+//  Copyright © 2016 Lee. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+
+@interface NSString (Empty)
+@property (nonatomic, assign, readonly) BOOL isEmptyStr;
+
++ (BOOL)isEmptyWithStr:(NSString *)str;
+
+
++ (NSString*)filterString:(NSString *)str FilteringRules:(NSString *)filteringRules;
+
+/**
+ *  计算文本高度
+ *
+ *  @param font  font
+ *  @param width width
+ *
+ *  @return size
+ */
+- (CGSize)sizeWithFont:(UIFont *)font width:(CGFloat)width;
+
++ (NSString *)int2Chinese:(NSInteger)integra;
+@end

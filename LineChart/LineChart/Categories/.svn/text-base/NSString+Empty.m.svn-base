@@ -1,0 +1,72 @@
+//
+//  NSString+Empty.m
+//  WSCloudBoardPartner
+//
+//  Created by MrChens on 13/1/2016.
+//  Copyright © 2016 Lee. All rights reserved.
+//
+
+#import "NSString+Empty.h"
+
+@implementation NSString (Empty)
+- (BOOL)isEmptyStr
+{
+    NSString *str = [self stringByReplacingOccurrencesOfString:@" " withString:@""];
+    if (str.length >0 || self.length >0) {
+        return NO;
+    }
+    return YES;
+}
+
+ +(BOOL)isEmptyWithStr:(NSString *)str
+{
+    if (nil == str || [str isKindOfClass:[NSNull class]]) {
+        return YES;
+    }
+    
+    NSString *string = [str stringByReplacingOccurrencesOfString:@" " withString:@""];
+    if (string.length >0 ) {
+        return NO;
+    }
+    return YES;
+}
+
+//规则 http://blog.csdn.net/a351945755/article/details/41945039
++ (NSString*)filterString:(NSString *)str FilteringRules:(NSString *)filteringRules
+{
+    NSCharacterSet *doNotWant = [NSCharacterSet characterSetWithCharactersInString:@"[\u3000-\u301e\ufe10-\ufe19\ufe30-\ufe44\ufe50-\ufe6b\uff01-\uffee]"];
+    return [[str componentsSeparatedByCharactersInSet: doNotWant]componentsJoinedByString: @""];
+}
+
+- (CGSize)sizeWithFont:(UIFont *)font width:(CGFloat)width
+{
+    NSMutableParagraphStyle *paragraph = [[NSMutableParagraphStyle alloc] init];
+    paragraph.lineBreakMode = NSLineBreakByWordWrapping;
+    NSDictionary *attribute = @{NSFontAttributeName: [UIFont systemFontOfSize:13], NSParagraphStyleAttributeName: paragraph};
+    
+    CGSize contentSize = [self boundingRectWithSize:CGSizeMake(width, MAXFLOAT) options: NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading attributes:attribute context:nil].size;
+    return contentSize;
+}
+
++ (NSString *)int2Chinese:(NSInteger)integra {
+    switch (integra) {
+        case 1: return @"一";
+        case 2: return @"二";
+        case 3: return @"三";
+        case 4: return @"四";
+        case 5: return @"五";
+        case 6: return @"六";
+        case 7: return @"七";
+        case 8: return @"八";
+        case 9: return @"九";
+        case 10: return @"十";
+        case 11: return @"十一";
+        case 12: return @"十二";
+        default:
+            return @"非月份";
+            break;
+    }
+    return nil;
+}
+
+@end

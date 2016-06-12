@@ -1,0 +1,183 @@
+//
+//  SystemUntil.m
+//  StudentApp
+//
+//  Created by user on 15-5-13.
+//  Copyright (c) 2015年 林维嘉. All rights reserved.
+//  一些系统共用方法
+
+#import "SystemUntil.h"
+
+@implementation SystemUntil
+
+/**
+ *颜色值转换成图片
+ */
++ (UIImage*) createImageWithColor: (UIColor *) color{
+    CGRect rect=CGRectMake(0.0f, 0.0f, 1.0f, 1.0f);
+    UIGraphicsBeginImageContext(rect.size);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSetFillColorWithColor(context, [color CGColor]);
+    CGContextFillRect(context, rect);
+    UIImage*theImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return theImage;
+}
+
++(NSString*) uuid {
+    CFUUIDRef puuid = CFUUIDCreate( nil );
+    CFStringRef uuidString = CFUUIDCreateString( nil, puuid );
+    NSString * result = (NSString *)CFBridgingRelease(CFStringCreateCopy( NULL, uuidString));
+    CFRelease(puuid);
+    CFRelease(uuidString);
+    result = [result stringByReplacingOccurrencesOfString:@"-" withString:@""];
+    return result;
+}
+
+//时间戳转时间
++(NSString *)getDateString:(NSNumber *)time formate:(NSString *)formate{
+    if(!time){
+        return @"暂无时间";
+    }
+    NSDate *confromTimesp = [NSDate dateWithTimeIntervalSince1970:time.doubleValue/1000];
+    NSDateFormatter* formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:formate];
+    return [formatter stringFromDate:confromTimesp];
+}
+
+//时间戳转时间
++(NSDate *)getDate:(NSNumber *)time{
+    NSDate *confromTimesp = [NSDate dateWithTimeIntervalSince1970:time.doubleValue/1000];
+    return confromTimesp;
+}
+
+//时间转时间戳
++(NSNumber *)getDateInterval:(NSDate *)time{
+    double interval = [time timeIntervalSince1970];
+    return [NSNumber numberWithDouble:interval*1000];
+}
+
+//时间转时间戳
++(NSNumber *)getDateIntervalFromString:(NSString *)time formate:(NSString *)formate{
+    NSDateFormatter* formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:formate];
+    double interval = [[formatter dateFromString:time] timeIntervalSince1970];
+    return [NSNumber numberWithDouble:interval*1000];
+}
+
+
++(NSString *)compareDate:(NSString *)date{
+    NSTimeInterval secondsPerDay = 24 * 60 * 60;//一天的时间差
+    NSDate *today = [[NSDate alloc] init];
+    NSDate *tomorrow, *yesterday;
+    
+    tomorrow = [today dateByAddingTimeInterval: secondsPerDay];
+    yesterday = [today dateByAddingTimeInterval: -secondsPerDay];
+    
+    // 10 first characters of description is the calendar date:
+    NSString * todayString = [[today description] substringToIndex:10];
+    NSString * yesterdayString = [[yesterday description] substringToIndex:10];
+    NSString * tomorrowString = [[tomorrow description] substringToIndex:10];
+    
+    NSString * dateString = [date substringToIndex:10];
+    NSString *dateStr2 = [date substringFromIndex:10];
+    
+    if ([dateString isEqualToString:todayString])
+    {
+        return [NSString stringWithFormat:@"%@%@",@"今天",dateStr2];
+    } else if ([dateString isEqualToString:yesterdayString])
+    {
+        return [NSString stringWithFormat:@"%@%@",@"昨天",dateStr2];
+    }else if ([dateString isEqualToString:tomorrowString])
+    {
+        return [NSString stringWithFormat:@"%@%@",@"明天",dateStr2];
+    }
+    return date;
+}
+
++(NSString *)formateMinutes:(int) mimutes{
+    if (mimutes < 0) {
+        return @"0:00";
+    }
+    int hour = mimutes/60;
+    int mim = mimutes%60;
+    
+    NSString *mimStr =@"";
+    if (mim <= 9) {
+        mimStr = [NSString stringWithFormat:@"0%d",mim];
+    }else{
+        mimStr = [NSString stringWithFormat:@"%d",mim];
+    }
+    
+    return [NSString stringWithFormat:@"%d:%@", hour, mimStr];
+}
+
++ (UIViewController *)getCurrentVC
+{
+    UIViewController *result = nil;
+    
+    UIWindow * window = [[UIApplication sharedApplication] keyWindow];
+    if (window.windowLevel != UIWindowLevelNormal)
+    {
+        NSArray *windows = [[UIApplication sharedApplication] windows];
+        for(UIWindow * tmpWin in windows)
+        {
+            if (tmpWin.windowLevel == UIWindowLevelNormal)
+            {
+                window = tmpWin;
+                break;
+            }
+        }
+    }
+    
+    UIView *frontView = [[window subviews] objectAtIndex:0];
+    id nextResponder = [frontView nextResponder];
+    
+    if ([nextResponder isKindOfClass:[UIViewController class]])
+        result = nextResponder;
+    else
+        result = window.rootViewController;
+    
+    return result;
+}
+
+
++(void)saveImageToPath:(UIImage *)image fileName:(NSString *)fileName{
+    NSString *path_sandox = NSHomeDirectory();
+    //设置一个图片的存储路径
+    NSString *imagePath = [path_sandox stringByAppendingString:[NSString stringWithFormat:@"/Documents/%@", fileName]];
+    //把图片直接保存到指定的路径（同时应该把图片的路径imagePath存起来，下次就可以直接用来取）
+    [UIImageJPEGRepresentation(image, 1.0) writeToFile:imagePath atomically:YES];
+}
+
++(UIImage *)getImageFromPath:(NSString *)fileName{
+    NSString *path_sandox = NSHomeDirectory();
+    //设置一个图片的存储路径
+    NSString *imagePath = [path_sandox stringByAppendingString:[NSString stringWithFormat:@"/Documents/%@", fileName]];
+    UIImage *img = [UIImage imageWithContentsOfFile:imagePath];
+    return img;
+}
+
++(void)removeImageFromPath:(NSString *)fileName{
+    //删除本地照片
+    NSFileManager *fileMgr = [NSFileManager defaultManager];
+    NSString *path_sandox = NSHomeDirectory();
+    
+    //设置一个图片的存储路径
+    NSString *imagePath = [path_sandox stringByAppendingString:[NSString stringWithFormat:@"/Documents/%@", fileName]];
+    if([fileMgr fileExistsAtPath:imagePath]){
+        [fileMgr removeItemAtPath:imagePath error:nil];
+    }
+}
+
++(BOOL)isFileExist:(NSString *)fileName{
+    NSFileManager *fileMgr = [NSFileManager defaultManager];
+    NSString *path_sandox = NSHomeDirectory();
+    //设置一个图片的存储路径
+    NSString *imagePath = [path_sandox stringByAppendingString:[NSString stringWithFormat:@"/Documents/%@", fileName]];
+    
+    return [fileMgr fileExistsAtPath:imagePath];
+}
+
+@end

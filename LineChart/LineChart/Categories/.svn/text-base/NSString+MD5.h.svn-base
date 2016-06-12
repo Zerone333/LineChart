@@ -1,0 +1,15 @@
+//
+//  NSString+MD5.h
+//  WSCloudBoardPartner
+//
+//  Created by MrChens on 4/1/2016.
+//  Copyright © 2016 Lee. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+
+@interface NSString (MD5)
++ (NSString *) getMD5WithString: (NSString *) inPutText;
+
+- (NSString *) getMD5;
+@end

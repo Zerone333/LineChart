@@ -1,0 +1,62 @@
+//
+//  SystemUntil.h
+//  StudentApp
+//
+//  Created by user on 15-5-13.
+//  Copyright (c) 2015年 林维嘉. All rights reserved.
+//  一些系统公用方法
+
+#import <Foundation/Foundation.h>
+
+@interface SystemUntil : NSObject
+
+/**
+ *颜色值转换成图片
+ */
++ (UIImage*) createImageWithColor: (UIColor *) color;
+
+/**
+ *获得uuid
+ */
++(NSString*) uuid ;
+
+//时间戳转时间
++(NSString *)getDateString:(NSNumber *)time formate:(NSString *)formate;
+
+//时间戳转时间
++(NSDate *)getDate:(NSNumber *)time;
+
+//时间转时间戳
++(NSNumber *)getDateInterval:(NSDate *)time;
+
+//时间转时间戳
++(NSNumber *)getDateIntervalFromString:(NSString *)time formate:(NSString *)formate;
+
+/**
+ * 判断今天、昨天、明天
+ */
++(NSString *)compareDate:(NSString *)date;
+
+/**
+ * 将分钟格式化为 XX:XX的字符串
+ */
++(NSString *)formateMinutes:(int) mimutes;
+
+/*
+ * 获取当前界面
+ */
++ (UIViewController *)getCurrentVC;
+
+//保存图片到沙盒
++(void)saveImageToPath:(UIImage *)image fileName:(NSString *)fileName;
+
+//从沙盒获取图片
++(UIImage *)getImageFromPath:(NSString *)fileName;
+
+//删除沙盒缓存照片
++(void)removeImageFromPath:(NSString *)fileName;
+
+//照片是否存在
++(BOOL)isFileExist:(NSString *)fileName;
+
+@end

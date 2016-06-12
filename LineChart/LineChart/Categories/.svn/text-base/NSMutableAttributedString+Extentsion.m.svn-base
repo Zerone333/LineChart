@@ -1,0 +1,29 @@
+//
+//  NSMutableAttributedString+Extentsion.m
+//  WSCloudBoardPartner
+//
+//  Created by 李艺真 on 16/2/22.
+//  Copyright © 2016年 Lee. All rights reserved.
+//
+
+#import "NSMutableAttributedString+Extentsion.h"
+
+@implementation NSMutableAttributedString (Extentsion)
++(NSMutableAttributedString *) stringArray:(NSArray *)stringArray colorArray:(NSArray *)colorArray
+{
+    NSMutableString *totalStr = [NSMutableString string];
+    for (NSString *str in stringArray) {
+        [totalStr appendString:str];
+    }
+    
+    NSMutableAttributedString *accounthintString=[[NSMutableAttributedString alloc]initWithString:totalStr];
+    //获取要调整颜色的文字位置,调整颜色
+    
+    for (int i = 0; i < stringArray.count; ++i) {
+        NSRange rang=[[accounthintString string]rangeOfString:stringArray[i]];
+        [accounthintString addAttribute:NSForegroundColorAttributeName value:colorArray[i] range:rang];
+        
+    }
+    return accounthintString;
+}
+@end
